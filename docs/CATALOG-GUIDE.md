@@ -1,0 +1,123 @@
+# Catalog and branding guide
+
+The catalog is maintained in `src/catalog.mjs`. `tools/build.mjs` reads its
+`products` array to generate `/plugins`, individual `/plugins/<slug>` pages and
+`dist/catalog.json`. That JSON is public build output: put no secrets, customer
+data or private internal notes in catalog fields.
+
+## Change the name without changing the strategy
+
+For the flagship product, update `name`, `prefix`, `wordmark` and `workingName`.
+Keep its stable internal `id` when only its display name changes. A new display
+name does not require changing the URL slug or the mix-engineer positioning.
+Review the actual capture and product mark as well: text embedded in images
+cannot change with a data field.
+
+Leave `slug: 'project-nebula'` unchanged until a URL change is intentional. If the
+slug eventually changes, generated internal links will use the new route, but
+the old public URL needs an explicit redirect. No future-slug redirect has been
+configured on Vercel. Prepare that redirect with the release change, verify it
+and obtain authorization for any needed hosting action.
+
+Company metadata is in `brand`. The visual company lockup in
+`src/components.mjs` and `public/assets/hex-mark.svg` is separate original
+artwork; review both when changing the company name. `brand.domain` documents the
+intended domain and does not configure DNS, hosting aliases or redirects.
+
+## Add a product
+
+Add an entry with a unique stable `id` and unique lowercase, hyphenated `slug`.
+Keep at least one product in the array. The first entry is the flagship used by
+the homepage, navigation and about-page introduction.
+
+| Fields | Maintenance notes |
+| --- | --- |
+| `name`, `prefix`, `wordmark`, `workingName` | Display identity and working-name disclosure |
+| `category`, `summary`, `shortDescription` | Product role and concise copy |
+| `status`, `version` | Actual release state; do not imply a public release prematurely |
+| `format`, `platform`, `testedSystem`, `hostQualification` | Claims backed by the exact release's evidence |
+| `assets.interface`, `assets.small`, dimensions, `assets.mark` | Public capture/mark paths and image metadata |
+| `captureLabel` | Identify an actual compiled interface or label a concept accurately |
+| `controls` | Names, descriptions and explanations for the real controls |
+| `demos` | Planned example labels and cues; audio remains disconnected |
+| `offer` | Placeholder price/currency/URLs; not a functioning commerce system |
+
+Adding data creates a listing and product route. It **does not** make the present
+Nebula template appropriate for every kind of audio plugin. Before adding a
+different product, tailor:
+
+1. The product page, hero, workflow, FAQ, release copy and compatibility details
+   in `src/pages.mjs`.
+2. Shared sections in `src/components.mjs` that assume a finishing tool, four
+   controls, Nebula's image description or current private-beta status.
+3. The four-control icon/colour treatment and interface crops in
+   `public/styles.css` and `public/storefront.css`. Crop coordinates and the
+   `--plugin-image` CSS variable currently refer to the Nebula capture.
+4. Responsive image descriptors and expanded-image dimensions if the new
+   capture is not the current 2400 × 1760 image with a 1200-pixel-wide variant.
+5. Product-specific validation and expected routes in `tools/verify-site.mjs`,
+   followed by desktop/mobile inspection.
+
+Compatibility copy is not fully data-driven yet. Changing only `platform` or
+`testedSystem` will not update every technical section. The current listening
+section also expects a nonempty `demos` array. Catalog strings containing `<br>`
+are trusted editorial markup, not a user-input feature.
+
+## Replace interface images
+
+Use an actual capture of the compiled product being represented. Preserve its
+source, build identity, dimensions and provenance. Replace the served image
+files in `public/assets/` and update catalog paths/dimensions where needed.
+Recheck responsive image sizes, enlarged view and every control crop.
+
+Do not use an AI repaint to impersonate a shipping interface or change labels
+inside a screenshot. If the real UI has not adopted a new name, retain an honest
+development-capture label until a new compiled capture exists. Decorative cosmic
+art is separate from the interface and must not imply measured spectral data.
+See [asset provenance](ASSET-PROVENANCE.md).
+
+## Release and demo placeholders
+
+Keep `offer.price`, currency and destination URLs `null` until the terms and
+destinations are approved. `commerceEnabled` is currently false, and the build
+also records commerce as disabled. Setting a flag or filling a URL does not
+implement checkout, entitlement, trial management or installer delivery.
+
+The frontend listening room is a layout preview. `original` and `processed`
+URLs are currently null, and merely filling them does not activate playback.
+Implement and verify the player before changing any “no audio” disclosure.
+Use permissioned, aligned source/processed renders with documented settings and
+listening-level matching; preserve original renders. Future A/B playback should
+retain position. Do not claim the plugin itself performs automatic loudness
+matching.
+
+Replace testimonial placeholders only with approved, attributable feedback.
+Price, trial duration, refunds, support commitments and platform compatibility
+must follow actual release decisions. Project Nebula remains a private beta;
+the website is not authorization to publish plugin binaries.
+
+## Check an edit locally
+
+No dependencies, secrets or `.env` file are required. With Node.js 22+:
+
+```powershell
+npm run build
+npm test
+node tools/verify-site.mjs --static-only
+```
+
+Use `npm run dev` to build and serve the preview at
+[localhost:4174](http://localhost:4174/). The server also accepts
+`http://127.0.0.1:4174`; localhost is preferred in the in-app browser.
+There is no file watcher: rebuild in another terminal after source changes.
+While the server is running:
+
+```powershell
+node tools/verify-site.mjs --base=http://localhost:4174
+```
+
+Review every affected route, navigation label, mobile layout, image crop and
+release disclosure. `dist/` is generated; corrections belong in source.
+Keep work local until publication is approved. A branch push can trigger a
+hosted preview through the existing Git integration; see
+[deployment and rollback](DEPLOYMENT-ROLLBACK.md).

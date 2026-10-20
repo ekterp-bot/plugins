@@ -1,0 +1,13 @@
+{
+  "name": "hex-engineer-plugins",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Hex the Engineer plugin storefront; no active commerce",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "dev": "node tools/build.mjs && node tools/server.mjs",
+    "preview": "node tools/server.mjs",
+    "test": "node --test tests/*.test.cjs"
+  },
+  "engines": { "node": ">=22" }
+}
