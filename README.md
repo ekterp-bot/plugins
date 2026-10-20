@@ -1,16 +1,39 @@
 # Hex the Engineer — plugin storefront
 
-A local website prototype for an independent audio-plugin brand, introducing
+A website for an independent audio-plugin brand, introducing
 Project Nebula as a finishing tool for mixing engineers. Project Nebula remains
 a working name and private beta. Pricing, trials, downloads, audio comparisons
 and testimonials are explicitly unfinished; no checkout or public installer is
 connected.
 
 Development is isolated on `codex/hex-plugin-storefront` in
-`C:\Users\ekter\.codex\worktrees\hex-plugins-website`. The existing live site and
-original `main` checkout remain intact. **Do not push or deploy this branch
-without publication approval:** the existing Git integration can create hosted
-previews from branch pushes.
+`C:\Users\ekter\.codex\worktrees\hex-plugins-website`. The preserved baseline and
+original checkout remain available for recovery.
+
+## Published — October 19, 2026
+
+The owner-approved website is live at
+[hextheengineer.com](https://hextheengineer.com), which redirects to `www`.
+Source commit `d2548bf4f60716512bcb46f6aa8d41802191a547` was pushed to the tested
+preview branch and `main`. Vercel reported production deployment success, and
+the public domain renders the new storefront.
+
+- GitHub repository rename completed: **`ekterp-bot/plugins`**, unchanged
+  repository ID `1260333340`. The shared local `origin` is now
+  `https://github.com/ekterp-bot/plugins.git`.
+- Authenticated Vercel dashboard inspection verified team
+  `ekterp-bots-projects`, existing project `hex-solutions`, and production branch
+  `main`. The connected repository name has updated to `ekterp-bot/plugins`.
+  The production overview now links to the renamed repository; the connection
+  has not been disconnected or recreated.
+- The renamed repository's Git integration produced Ready preview
+  `EcNytwm1sdK1KfuShSTb1jUXA3ca` and production
+  `ExpdzihSkyiPm2toQymSXWhowQWN`. The earlier baseline deployment is preserved
+  for recovery. See [the launch report](docs/LAUNCH-REPORT.md) and
+  [deployment and rollback record](docs/DEPLOYMENT-ROLLBACK.md).
+
+This authorization covers website publication. Checkout, public plugin downloads
+and email delivery remain inactive.
 
 ## Run locally
 
@@ -81,16 +104,19 @@ asset changes; see [the catalog guide](docs/CATALOG-GUIDE.md).
   button remains disabled.
 - Direct valid JSON requests to `/api/support` return **503** with `sent: false`;
   the endpoint has no provider transport. Legacy `/api/intake` returns **410** in
-  this branch. Production intake has not been retired by this local work.
+  the published storefront. Deployed GET method/status checks were observed
+  without sending a support message.
 - The actual compiled plugin capture is an image, not an interactive plugin.
   Decorative atmosphere can be paused and respects reduced-motion preferences.
-- Search indexing is disabled in the prototype. Enabling sales, downloads,
-  support delivery or public indexing requires completed release work and
-  publication approval.
+- Production pages permit indexing and expose a six-page sitemap as part of the
+  approved launch. Local/preview builds remain `noindex`; the 404 page always
+  remains `noindex`. The visible ribbon identifies this as a **PRODUCT PREVIEW**.
+  Sales, downloads and support delivery remain inactive.
 
 ## Documentation and review images
 
 - [Catalog, naming and product maintenance](docs/CATALOG-GUIDE.md)
+- [Production launch and verification](docs/LAUNCH-REPORT.md)
 - [Verified infrastructure and source fingerprints](docs/INFRASTRUCTURE-AUDIT.md)
 - [Repository rename, deployment boundaries and rollback](docs/DEPLOYMENT-ROLLBACK.md)
 - [Support endpoint and future email integration](docs/EMAIL-INTEGRATION.md)
@@ -103,7 +129,7 @@ Local review captures are stored under `artifacts/screenshots/`, including
 ignored by Git. Additional page captures and the final review report are recorded
 as the review pass completes.
 
-The GitHub rename to `ekterp-bot/plugins` is authorized but not performed:
-Vercel connection access is needed to verify the existing Git binding and repair
-path first. This is separate from publishing the new site. Existing DNS, hosting,
-mail configuration and live customer data have not been changed.
+The repository rename and deployment integration are verified by the successful
+preview and production builds. The earlier preparation checkpoints remain in the
+deployment record as history; do not rerun their rename commands. Existing DNS
+and mail configuration were retained.

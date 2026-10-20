@@ -1,6 +1,7 @@
 # Hex the Engineer — local storefront implementation
 
-October 19, 2026. Local review build; nothing published.
+October 19, 2026. Historical local-review checkpoint. The subsequently approved
+publication and final live verification are recorded in [the launch report](LAUNCH-REPORT.md).
 
 ## Delivered
 

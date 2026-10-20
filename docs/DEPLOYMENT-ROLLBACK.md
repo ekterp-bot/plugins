@@ -1,4 +1,126 @@
-# Deployment and rollback preparation
+# Deployment and rollback record
+
+## Published — October 19, 2026
+
+The owner-approved storefront is live at
+[hextheengineer.com](https://hextheengineer.com), redirecting to `www`.
+Code commit **`d2548bf4f60716512bcb46f6aa8d41802191a547`** was successfully pushed
+to the tested preview branch and `main`. This records the website launch;
+checkout, public plugin downloads and email transport remain inactive.
+
+| Item | Verified identity or result |
+| --- | --- |
+| GitHub repository | `ekterp-bot/plugins`, unchanged ID `1260333340` |
+| Shared origin | `https://github.com/ekterp-bot/plugins.git` |
+| Vercel team / project | `ekterp-bots-projects` / `hex-solutions` |
+| Production branch | `main` |
+| Ready preview | `EcNytwm1sdK1KfuShSTb1jUXA3ca`, five-second build |
+| Preview URL | `https://hex-solutions-kv8gsqebm-ekterp-bots-projects.vercel.app` |
+| Production deployment | `ExpdzihSkyiPm2toQymSXWhowQWN`, GitHub deployment status success |
+| GitHub deployment | `7191307540`, created `2026-10-20T04:09:26Z` (October 19, 21:09:26 PDT) |
+| Public build manifest | HTTP 200, built at `2026-10-20T04:09:23Z`, `indexable: true`, `commerceEnabled: false` |
+
+[Production deployment dashboard](https://vercel.com/ekterp-bots-projects/hex-solutions/ExpdzihSkyiPm2toQymSXWhowQWN).
+The preview browser checks covered all six routes, the deployed support GET
+method gate and retired intake response. The public domain was observed serving
+the new storefront. The [launch report](LAUNCH-REPORT.md) records final HTTP and
+desktop/mobile verification separately.
+
+Production indexing is part of the approved launch: `VERCEL_ENV=production`
+enables index/follow and a six-page sitemap. Local/preview builds remain
+`noindex`, and the 404 page always remains `noindex`. The ribbon says
+**PRODUCT PREVIEW**, accurately separating the published website from the
+plugin's private-beta release status.
+
+The existing project was retained without disconnecting its Git integration.
+Its connected repository name updated to `ekterp-bot/plugins`; its older
+`hex-solutions` link href redirects through GitHub. The successful preview and
+production builds now provide actual integration evidence. Settings remain
+repository-root directory, preset **Other**, Node **24.x**, with build/output
+overrides off and repository `vercel.json` in control.
+
+### Preserved rollback target
+
+Baseline source: `24f0574ea0afc1936dd8f98992a62642d5db8a8f`. The prior Ready
+deployment remains the candidate recovery target:
+
+- [Dashboard](https://vercel.com/ekterp-bots-projects/hex-solutions/DShdvJsGETNWLo52hVgg8Uo8Mhp1)
+- [Deployment URL](https://hex-solutions-qanp89qns-ekterp-bots-projects.vercel.app)
+- Full-history bundle:
+  `C:\Users\ekter\.codex\worktrees\hex-solutions-pre-migration.bundle`
+- Bundle SHA-256:
+  `D071319AE434AE2DBAC310F7C36406B75DF79D9E5D4B48FF59E81CB2AD005AF0`
+
+Before any recovery, reconfirm the target's project and rollback eligibility.
+Preserve current work and use the recovery procedure below; no rollback has
+been executed. Existing DNS and mail settings remain unchanged.
+
+<details>
+<summary>Historical launch-in-progress checkpoint — October 19, 2026, 21:07 PDT</summary>
+
+Checkpoint recorded at **21:07 PDT** (`2026-10-20T04:07Z`). The owner explicitly
+approved publishing the reviewed website to **hextheengineer.com** in the current
+turn. This supersedes the preparation-only publication boundary below. **No
+completed preview build or production switch is claimed at this checkpoint.**
+
+### Verified account and current repository
+
+- Authenticated Chrome inspection verified Vercel team `ekterp-bots-projects`,
+  existing project `hex-solutions`, and production branch `main`.
+- GitHub rename completed to `ekterp-bot/plugins`, preserving repository ID
+  `1260333340`. Shared local origin:
+  `https://github.com/ekterp-bot/plugins.git`. Both worktrees use that common
+  repository configuration.
+- After the rename, the same Vercel project's Git settings display **Connected
+  Git Repository: `ekterp-bot/plugins`**, with the pre-existing “Connected Jun 5”
+  label. The link's href still names `hex-solutions` and relies on GitHub's
+  redirect. The displayed repository name updated automatically. The existing
+  connection was not disconnected or recreated.
+- Repository binding display is verified; actual webhook delivery and preview
+  deployment remain to be verified by the authorized preview push.
+
+### Existing production and build settings
+
+- Existing production: **Ready**, source commit `24f0574`; preserved source
+  baseline is `24f0574ea0afc1936dd8f98992a62642d5db8a8f`.
+- Exact Vercel deployment dashboard:
+  `https://vercel.com/ekterp-bots-projects/hex-solutions/DShdvJsGETNWLo52hVgg8Uo8Mhp1`.
+- Existing deployment URL:
+  `https://hex-solutions-qanp89qns-ekterp-bots-projects.vercel.app`.
+- Root directory is empty (repository root), framework preset **Other**, Node
+  **24.x**. Build/output overrides are off, so repository `vercel.json` supplies
+  the candidate's configuration. No deployment hooks or deployment checks were
+  configured in the inspected settings.
+- The full-history baseline bundle and original checkout listed below remain
+  preserved. No recovery, repository disconnect/reconnect or DNS change has been
+  performed as part of this checkpoint.
+
+### Remaining launch steps
+
+1. Push the reviewed branch under the owner's publication authorization and
+   confirm the same Vercel project receives its preview from the renamed
+   repository. Record the exact source commit, deployment ID, build outcome and
+   URL. A displayed binding alone is not webhook evidence.
+2. Verify the hosted routes, deep links, assets, responsive presentation and
+   deployed API method/status behavior against the reviewed candidate. Keep
+   checkout, public plugin downloads and email transport inactive.
+3. Publish the reviewed candidate through the existing production project and
+   `main` flow, then record the actual deployment identity, aliases and observed
+   live checks. No new project or domain/DNS migration is implied.
+4. If recovery is required, use the preserved existing deployment and baseline
+   evidence. Reconfirm project ownership and rollback eligibility before
+   executing the rollback procedure; do not overwrite unrelated local work.
+
+The owner-approved website launch is separate from plugin release approval.
+This checkpoint activates no checkout, public installer, trial download or
+email transport. The earlier procedure and evidence are retained verbatim below
+as history; its “not performed” rename and publication statements are superseded.
+Do not rerun the archived rename commands.
+
+</details>
+
+<details>
+<summary>Historical preparation record — October 19, 2026, before launch approval and repository rename</summary>
 
 October 19, 2026, America/Los_Angeles. **Prepared procedure only.** The storefront
 branch is local; no push, deployment, DNS change, hosting change, email send or
@@ -170,3 +292,5 @@ The recovered `main` should be
 rollback and the bundle does not contain provider secrets, DNS configuration or
 mail data. Keep the recovery separate; do not hard-reset, clean, delete, or
 overwrite the active worktrees to restore old code.
+
+</details>

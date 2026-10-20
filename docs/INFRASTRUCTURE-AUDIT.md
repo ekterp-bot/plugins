@@ -1,5 +1,8 @@
 # Website infrastructure audit
 
+The later repository rename and approved production deployment are recorded in
+[the launch report](LAUNCH-REPORT.md). This audit preserves the pre-launch evidence.
+
 Snapshot: October 19, 2026, America/Los_Angeles. Public HTTP observations were
 made around 03:47–03:50 UTC on October 20. This is a read-only audit plus local
 documentation; it is not a deployment receipt.
