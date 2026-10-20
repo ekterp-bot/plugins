@@ -1,7 +1,7 @@
 import { brand, products, productPath } from './catalog.mjs';
 export const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const arrow = '<span aria-hidden="true">↗</span>';
-export const brandLink = () => `<a class="brand company-brand" href="/" aria-label="${brand.name} home"><img src="${brand.mark}" alt="" width="39" height="39"><span><strong>HEX</strong><small>THE ENGINEER</small></span></a>`;
+export const brandLink = () => `<a class="brand company-brand" href="/" aria-label="${brand.name} home"><img src="${brand.mark}" alt="" width="60" height="60"><span><strong>HEX</strong><small>THE ENGINEER</small></span></a>`;
 export function layout(title, description, path, body, product) {
   const nav = [['/plugins','Plugins'],['/downloads','Downloads'],['/support','Support'],['/about','About']];
   const isPage = path !== '/404';

@@ -3,7 +3,7 @@ export const brand = {
   domain: 'hextheengineer.com',
   siteUrl: 'https://www.hextheengineer.com',
   tagline: 'Considered tools. Intentional sound.',
-  mark: '/assets/hex-mark.svg',
+  mark: '/assets/hex-logo-purple.svg',
   contact: 'hexsolutions.dev@gmail.com',
   // Leave commerce and all public installers disconnected until release approval.
   commerceEnabled: false,

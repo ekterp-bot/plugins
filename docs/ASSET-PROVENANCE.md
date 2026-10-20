@@ -4,6 +4,28 @@ Recorded October 19, 2026, America/Los_Angeles. All work described here is confi
 to the isolated `codex/hex-plugin-storefront` website worktree. The EarWax VST3
 engineering checkout and previous Nebula prototype were read only.
 
+## Owner-supplied company logo update
+
+After the initial launch, the owner provided `G:\My Drive\Logo\Purple.png`
+and `Blue.png` and selected purple for the website. Both are transparent
+2000 × 1500 PNGs. Exact original bytes are preserved in `assets/brand/`:
+
+- `hex-logo-purple.png`: 75,314 bytes, SHA-256
+  `4E5AEA330F1125DC8FA4B84145E273D4BD54E5C96B602765B094B35A607F2C13`.
+- `hex-logo-blue.png`: 80,562 bytes, SHA-256
+  `E8663BBC5A7EFD233D47EA0089562F4809F909313D8DA8F2B2181C132FA5DDA1`.
+
+The served `/assets/hex-logo-purple.svg` embeds the exact purple PNG bytes in an
+SVG image element. Its square `viewBox="380 130 1240 1240"` frames the transparent
+margins without altering, tracing, recoloring or clipping the artwork. The
+visible pixels lie within `(411,185)`–`(1589,1315)`. This is a layout wrapper
+around raster artwork, not a newly drawn vector logo.
+
+The shared brand asset now supplies header, footer, About-page emblem and SVG
+favicon. The blue source is retained for a future brand choice; it is not served.
+The original geometric placeholder remains in history and is no longer used by
+the site. The plugin's own interface artwork is unchanged.
+
 ## Served product captures
 
 The current image source is the newest BP009 compiled Release editor-harness
