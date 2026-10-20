@@ -70,7 +70,8 @@ for (const route of [...expectedRoutes, '/404']) {
     pages.set(route, { html, tags, ids: new Set(ids) });
     check(`${route}: one h1`, tags.filter(t => t.tag === 'h1').length === 1);
     check(`${route}: unique IDs`, duplicateIds.length === 0, { duplicateIds });
-    check(`${route}: noindex preview`, tags.some(t => t.tag === 'meta' && t.attrs.name === 'robots' && t.attrs.content?.includes('noindex')));
+    const expectedRobots = manifest?.indexable === true && route !== '/404' ? 'index,follow' : 'noindex,nofollow';
+    check(`${route}: correct indexing policy`, tags.some(t => t.tag === 'meta' && t.attrs.name === 'robots' && t.attrs.content === expectedRobots));
     const missingAriaTargets = [];
     for (const tag of tags) {
       for (const attr of ['aria-labelledby', 'aria-describedby', 'aria-controls', 'aria-owns', 'aria-activedescendant', 'for']) {

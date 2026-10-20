@@ -1,10 +1,11 @@
 import { mkdir, writeFile, cp, rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { products } from '../src/catalog.mjs';
+import { brand, products } from '../src/catalog.mjs';
 import { home, catalogPage, productPage, downloadsPage, supportPage, aboutPage, notFound } from '../src/pages.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const out = path.join(root, 'dist');
+const indexable = process.env.VERCEL_ENV === 'production';
 // Only remove the exact generated output directory under this worktree.
 if (path.dirname(out) !== root.replace(/[\\/]$/, '') || path.basename(out) !== 'dist') throw new Error('Unsafe output path');
 await rm(out,{recursive:true,force:true});
@@ -23,6 +24,13 @@ for (const [route,html] of routes) {
 }
 await writeFile(path.join(out,'404.html'),notFound());
 await writeFile(path.join(out,'catalog.json'),JSON.stringify(products,null,2));
-await writeFile(path.join(out,'robots.txt'),'User-agent: *\nDisallow: /\n');
-await writeFile(path.join(out,'build-manifest.json'),JSON.stringify({builtAt:new Date().toISOString(),routes:[...routes.keys()],commerceEnabled:false},null,2));
+await writeFile(path.join(out,'robots.txt'),indexable
+  ? `User-agent: *\nAllow: /\nSitemap: ${new URL('/sitemap.xml',brand.siteUrl).href}\n`
+  : 'User-agent: *\nDisallow: /\n');
+if (indexable) {
+  const escapeXml = value => value.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+  const urls = [...routes.keys()].map(route=>`  <url><loc>${escapeXml(new URL(route,brand.siteUrl).href)}</loc></url>`).join('\n');
+  await writeFile(path.join(out,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+}
+await writeFile(path.join(out,'build-manifest.json'),JSON.stringify({builtAt:new Date().toISOString(),routes:[...routes.keys()],indexable,commerceEnabled:false},null,2));
 console.log(`Built ${routes.size} routes to dist. Commerce and public downloads remain disabled.`);

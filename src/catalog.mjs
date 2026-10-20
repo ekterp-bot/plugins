@@ -1,6 +1,7 @@
 export const brand = {
   name: 'Hex the Engineer',
   domain: 'hextheengineer.com',
+  siteUrl: 'https://www.hextheengineer.com',
   tagline: 'Considered tools. Intentional sound.',
   mark: '/assets/hex-mark.svg',
   contact: 'hexsolutions.dev@gmail.com',
