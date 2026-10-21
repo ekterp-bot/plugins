@@ -10,11 +10,13 @@ Development is isolated on `codex/hex-plugin-storefront` in
 `C:\Users\ekter\.codex\worktrees\hex-plugins-website`. The preserved baseline and
 original checkout remain available for recovery.
 
-## Current local review — October 21, 2026
+## Current published version — October 21, 2026
 
 The approved BP010 interface now supplies the hero, product details and sharing
-card. This visual-finalization pass is **local only**. Do not push or deploy it
-without owner approval. See [implementation report](docs/VISUAL-FINALIZATION-REPORT.md),
+card. Following explicit owner approval, visual commit `0e335e6` was published
+to [hextheengineer.com](https://www.hextheengineer.com/). Production deployment
+`C1rdFTgn2y6KeaSHBah7zCy9JhMi` succeeded; all 23 live checks passed, followed by
+desktop and mobile browser inspection. See [implementation report](docs/VISUAL-FINALIZATION-REPORT.md),
 [image replacement guide](docs/PRODUCT-IMAGES.md), and
 [future-build roadmap](docs/FUTURE-BUILD-ROADMAP.md).
 

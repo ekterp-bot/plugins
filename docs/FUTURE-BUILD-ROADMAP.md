@@ -1,13 +1,13 @@
 # Next storefront passes
 
-October 21, 2026. Visual finalization is local and awaiting review. No push or
-production deployment is part of this pass. Existing Vercel project
-`hex-solutions` builds `dist/` with `npm run build`; production tracks `main`.
-A branch push can also trigger a remote preview, so keep this commit local.
+October 21, 2026. Visual finalization was published after explicit owner approval
+as commit `0e335e6`. Existing Vercel project `hex-solutions` builds `dist/` with
+`npm run build`; production tracks `main`. The live domain passed 23 checks
+and desktop/mobile browser inspection. The capabilities below remain future work.
 
 | Capability | Current implementation | Next step |
 | --- | --- | --- |
-| Product presentation | Real BP010 imagery, responsive variants, image viewer, six pages | Review local desktop/mobile presentation, then separately approve publication |
+| Product presentation | Published BP010 imagery, responsive variants, image viewer, six pages | Maintain approved image provenance as the plugin evolves |
 | Audio comparisons | Existing clearly labeled visual placeholder; no playback | Hex supplies permissioned genre examples and exact settings; implement [audio plan](AUDIO-DEMO-PLAN.md) |
 | Support | Existing contact email link works; form validates locally only, API fails closed without delivery | Verify existing sender infrastructure, then authorize a real support/feedback transport |
 | Private beta | Architecture only; no auth, codes, grants or installer links | Implement verified sign-in → invite → permanent complimentary grant → approved private installer → feedback |

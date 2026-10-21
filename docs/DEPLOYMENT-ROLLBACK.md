@@ -1,5 +1,22 @@
 # Deployment and rollback record
 
+## Visual update published — October 21, 2026
+
+The owner explicitly requested applying the reviewed changes to the public site.
+Commit `0e335e6fb35e3afb8e7efde4c38899e937398e31` was pushed atomically to
+`codex/hex-plugin-storefront` and `main`, without force. Vercel production
+deployment [C1rdFTgn2y6KeaSHBah7zCy9JhMi](https://vercel.com/ekterp-bots-projects/hex-solutions/C1rdFTgn2y6KeaSHBah7zCy9JhMi)
+succeeded; GitHub deployment `7221431563` identifies the same commit and
+Production environment. The live manifest was built at `2026-10-21T08:29:13.018Z`.
+All 23 live checks passed, including exact asset hashes, and the desktop/mobile
+presentation was inspected in the browser. Commerce remains disabled.
+
+Previous production source: `5b7203d520dad24b2463bb3d03f90f309e72a504`;
+previous deployment: `2ovXepWQi9gLJi4apCymerKW6rzy`. These are rollback references,
+not instructions to roll back. No DNS, environment, Git integration or plugin
+engineering changes were part of publication. See the
+[visual finalization report](VISUAL-FINALIZATION-REPORT.md) for scope and evidence.
+
 ## Published — October 19, 2026
 
 The owner-approved storefront is live at

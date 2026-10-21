@@ -1,14 +1,17 @@
 # Storefront visual finalization — October 21, 2026
 
-**Ready for local review. Not published.** Preview:
+**Published following explicit owner approval.** Live:
+[hextheengineer.com](https://www.hextheengineer.com/). Local preview:
 [localhost:4175](http://localhost:4175/), with the
 [product page](http://localhost:4175/plugins/project-nebula).
 
 Work remains in `C:\Users\ekter\.codex\worktrees\hex-plugins-website`, branch
-`codex/hex-plugin-storefront`. The starting tree was clean at `5b7203d`. No push,
-Vercel action, repository rename or engineering modification was made. Current
-deployment configuration still builds `dist/` on the existing Vercel project;
-production tracks `main`. The report is included in the local implementation commit.
+`codex/hex-plugin-storefront`. The starting tree was clean at `5b7203d`.
+The initial pass stayed local. The owner's follow-up authorized publication;
+visual commit `0e335e6fb35e3afb8e7efde4c38899e937398e31` was pushed to the
+marketing branch and `main`. Vercel production deployment
+`C1rdFTgn2y6KeaSHBah7zCy9JhMi` succeeded on the existing project. No repository
+rename, deployment-configuration change or engineering modification was made.
 
 ## Implemented
 
@@ -32,6 +35,11 @@ final icons was available. It has not been falsely upscaled or mixed with older
 
 ## Targeted verification
 
+- After publication, all 23 live checks passed: six routes, ten product asset
+  hashes, three script/style hashes, production manifest, apex redirect and
+  endpoint method/retirement gates. Desktop hero and mobile control details
+  were visually inspected on the public domain. Local evidence is saved in
+  `artifacts/deployment/published-visual-finalization.json`.
 - Website build passed. Existing Node tests: 12 passed. Existing static/loopback
   verifier: 99 checks passed (routes, references, release gates and endpoints).
 - Browser inspection of homepage/product at 1440 desktop and 390 phone widths;
@@ -59,6 +67,8 @@ Actual captures, outside the public build:
 - [Product desktop](../artifacts/screenshots/visual-finalization/product-desktop-full.jpg)
 - [Product mobile](../artifacts/screenshots/visual-finalization/product-mobile-full.jpg)
 - [Hero detail](../artifacts/screenshots/visual-finalization/home-hero-desktop.jpg)
+- [Published desktop hero](../artifacts/screenshots/visual-finalization/published-home-hero-desktop.jpg)
+- [Published mobile controls](../artifacts/screenshots/visual-finalization/published-product-mobile.jpg)
 
 ## Prepared for subsequent passes
 
@@ -74,5 +84,5 @@ discounts and checkout remain future implementation work.
 
 The preview server is running on loopback port 4175. For a fresh session use
 `npm run dev` (default 4174), or set `PORT=4175` first. Rebuild after source edits;
-the server is deliberately not a watcher. Review first; publishing needs a new
-explicit approval for this pass.
+the server is deliberately not a watcher. The reviewed visual changes are now
+published; the planned functionality above remains inactive.
