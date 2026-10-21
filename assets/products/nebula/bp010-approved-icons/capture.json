@@ -1,0 +1,10 @@
+{
+  "file": "compiled-original.jpg",
+  "sha256": "A819E22961B3680E96742E9CF350E60DBAD0E2403CF747BBA86762B83D9708F3",
+  "clientRect": [1, 24, 1200, 880],
+  "build": "BP010-0.1.0-Release-g9eda0638-sd2c7096d6719",
+  "moduleSha256": "1966AD5681A7E3AFFD301B30377926A00EAE59DBFEA1B042331698C24A494201",
+  "source": "C:/Users/ekter/Documents/ChatGPT/EarWax/artifacts/approved-icons-20261021/approved-icons-compiled.jpg",
+  "evidence": ["approved-icons-compiled-review.json", "preview-identity.json", "installation-verification-retry2.json"],
+  "notes": "Actual compiled VST3. Native host chrome only is trimmed. Audio was disabled: silent meters/history are authentic. This is the largest complete capture found for these final approved icons. Marketing source approval does not approve public binary distribution."
+}

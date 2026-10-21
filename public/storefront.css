@@ -19,3 +19,65 @@
 @media (forced-colors:active) {
   .company-brand strong,.company-brand small{background:none;color:LinkText}
 }
+
+/* Approved BP010 imagery: faithful framing, one source, no perspective warping. */
+html{scrollbar-gutter:stable}
+.clarity{--control:#75e3e8}
+.silk{--control:#c2a3f3}
+.air{--control:#82c8ff}
+.tame{--control:#e8c681}
+:root{--cosmic-image:url('/assets/atmosphere/cosmic-field-1536.webp');--galaxy-image:url('/assets/atmosphere/galaxy-cloud-1983.webp')}
+.hero-side .product-title{display:flex;justify-content:flex-start;align-items:baseline;gap:0;font-size:clamp(23px,2.35vw,33px);font-weight:400;letter-spacing:-.045em;line-height:1.25;color:#e7edf6;white-space:nowrap}
+.hero-side .product-title strong{display:inline;font:inherit;letter-spacing:inherit;margin:0;color:#78dbe1}
+.hero .product-stage{max-width:1200px;width:calc(100% - 96px)}
+.product-image-button{display:block;width:100%;padding:0;background:#060c15;transform:none;border-radius:15px;box-shadow:0 30px 90px #000a,0 0 75px #7154a325,0 0 1px #88dcea80}
+.product-image-button:hover{transform:none;border-color:#91b9ca80}
+.product-image{width:100%;height:auto;transform:none;border-radius:14px 14px 0 0}
+.image-enlarge{position:static;display:flex;justify-content:center;align-items:center;gap:12px;width:100%;padding:10px 16px;min-height:44px;background:linear-gradient(100deg,#102333,#171b32);border:0;border-top:1px solid #8ab8ce25;border-radius:0;color:#c6dbe9;font:11px 'Space Grotesk',sans-serif;opacity:1;transform:none;letter-spacing:.025em}
+.image-enlarge>span{font-size:16px;color:#8edce2}
+.stage-caption>span{color:#a8bfd1}
+.catalog-visual{padding-bottom:24px}
+.catalog-visual:after{display:none}
+.catalog-visual img,.catalog-visual:hover img{transform:none;border-radius:10px;border:1px solid #93b6d52c}
+.feature-card{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;align-items:center;min-height:350px;padding:30px 28px 45px}
+.feature-card:has(details[open]){min-height:350px}
+.feature-copy{width:auto;padding:0;min-width:0}
+.feature-copy>p:not(.control-name){max-width:none}
+.knob-window{position:static;inset:auto;width:100%;height:auto;margin:0;transform:none;filter:drop-shadow(0 12px 24px #0005)}
+.knob-window img{width:100%;height:auto;border-radius:10px;border:1px solid #8bb9ca1c}
+.knob-window figcaption{text-align:center;color:#8098b3;font:7px 'Space Grotesk',sans-serif;letter-spacing:.1em;margin-top:8px}
+.card-label{font-size:8px}
+.interface-toolbar{display:flex;align-items:center;gap:18px;justify-content:space-between;margin-bottom:12px}
+.interface-toolbar button{flex-shrink:0;min-height:44px;padding:9px 15px;border:1px solid #7aacc45c;border-radius:5px;background:#13283a;color:#c7e7ef;font-size:12px}
+.interface-toolbar>span{font-size:11px;color:#a6bacd}
+.interface-scroll{overflow:auto;max-height:70dvh;border:1px solid #ffffff1a;border-radius:8px;overscroll-behavior:contain;background:#04090e}
+.interface-scroll:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.interface-scroll img{width:100%;height:auto;max-height:none;object-fit:contain}
+.interface-scroll.is-full-size img{width:1200px;min-width:1200px;max-width:none;height:880px}
+@media(min-width:761px) and (max-width:980px){.feature-card{grid-template-columns:1fr 260px}.knob-window{transform:none}}
+@media(max-width:760px){
+  :root{--cosmic-image:url('/assets/atmosphere/cosmic-field-960.webp');--galaxy-image:url('/assets/atmosphere/galaxy-cloud-960.webp')}
+  .hero-side .product-title{justify-content:center;font-size:26px}
+  .hero .product-stage{width:calc(100% - 24px)}
+  .product-image-button{border-radius:10px}
+  .product-image{border-radius:9px 9px 0 0}
+  .image-enlarge{font-size:11px;padding-inline:10px}
+  .stage-caption{align-items:center;gap:10px;padding:10px 3px}
+  .stage-caption>span{font-size:9px;max-width:57%;line-height:1.7}
+  .feature-card,.feature-card:has(details[open]){grid-template-columns:1fr;min-height:0;gap:24px;padding:26px 24px 45px}
+  .feature-copy{width:auto;padding:0}
+  .feature-copy h3{font-size:28px}
+  .feature-copy>p:not(.control-name){font-size:13px;max-width:none}
+  .knob-window{width:220px;max-width:100%;margin:auto;grid-row:1;transform:none}
+  .knob-window figcaption{font-size:8px;line-height:1.6;letter-spacing:.06em}
+  .card-label{font-size:7px}
+  .interface-toolbar{display:block}
+  .interface-toolbar>span{display:block;margin-top:10px;font-size:12px;line-height:1.6}
+  .interface-scroll{max-height:60dvh}
+}
+@media(max-width:370px){
+  .feature-card,.feature-card:has(details[open]){grid-template-columns:1fr;gap:20px;padding:26px 22px 42px}
+  .knob-window{width:210px;margin:auto;grid-row:1}
+  .feature-copy h3{font-size:28px}
+  .feature-copy>p:not(.control-name){font-size:13px}
+}

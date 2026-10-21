@@ -1,0 +1,7 @@
+{
+  "$schema": "./audio-demos.schema.json",
+  "schemaVersion": 1,
+  "productId": "nebula",
+  "publicationEnabled": false,
+  "examples": []
+}

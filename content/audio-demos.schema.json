@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hex-the-engineer:audio-demos:1",
+  "title": "ProjectNebula planned audio-demo editorial manifest",
+  "description": "Preparation only. This schema is not connected to the site build or a player. Never publish the editorial manifest or rights evidence directly.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "productId", "publicationEnabled", "examples"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "productId": { "$ref": "#/$defs/id" },
+    "publicationEnabled": { "type": "boolean", "default": false },
+    "examples": { "type": "array", "items": { "$ref": "#/$defs/demo" } }
+  },
+  "allOf": [{
+    "if": { "properties": { "publicationEnabled": { "const": true } } },
+    "then": { "properties": { "examples": { "minItems": 1, "items": { "properties": { "publication": { "properties": { "status": { "const": "approved" } } } } } } } }
+  }],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 80 },
+    "text": { "type": "string", "minLength": 1, "maxLength": 500, "pattern": "\\S" },
+    "sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "nullableText": { "anyOf": [{ "$ref": "#/$defs/text" }, { "type": "null" }] },
+    "nullableTime": { "type": ["string", "null"], "format": "date-time" },
+    "percent": { "type": "number", "minimum": 0, "maximum": 100, "multipleOf": 0.01 },
+    "asset": {
+      "type": "object", "additionalProperties": false,
+      "required": ["url", "sha256", "sampleRateHz", "channels", "frameCount", "integratedLufs", "truePeakDbtp", "comparisonGainDb"],
+      "properties": {
+        "url": { "type": ["string", "null"], "pattern": "^/audio/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:wav|flac|mp3|m4a|ogg|opus)$", "description": "Planned same-origin public asset path; null until prepared. Never a local path or signed private URL." },
+        "sha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "sampleRateHz": { "type": ["integer", "null"], "minimum": 8000, "maximum": 192000 },
+        "channels": { "enum": [1, 2, null] },
+        "frameCount": { "type": ["integer", "null"], "minimum": 1 },
+        "integratedLufs": { "type": ["number", "null"], "description": "Measured from the final decoded delivery asset over the complete excerpt." },
+        "truePeakDbtp": { "type": ["number", "null"], "description": "Measured after comparison gain and final encoding." },
+        "comparisonGainDb": { "type": ["number", "null"], "description": "Static gain baked into this comparison asset after its source render; separate from plugin Output." }
+      }
+    },
+    "publishableAsset": {
+      "allOf": [{ "$ref": "#/$defs/asset" }, {
+        "properties": {
+          "url": { "type": "string" }, "sha256": { "type": "string" },
+          "sampleRateHz": { "type": "integer" }, "channels": { "type": "integer" }, "frameCount": { "type": "integer" },
+          "integratedLufs": { "type": "number" }, "truePeakDbtp": { "type": "number", "maximum": -1 }, "comparisonGainDb": { "type": "number" }
+        }
+      }]
+    },
+    "demo": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "genre", "track", "plugin", "settings", "audio", "engineerNote", "quality", "rights", "publication"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "genre": { "$ref": "#/$defs/text" },
+        "track": {
+          "type": "object", "additionalProperties": false,
+          "required": ["displayName", "displayCredit", "useCase"],
+          "properties": {
+            "displayName": { "$ref": "#/$defs/text", "description": "Only the permitted public title or alias; the real title is not required." },
+            "displayCredit": { "$ref": "#/$defs/nullableText" },
+            "useCase": { "enum": ["premaster", "bus", "track"] }
+          }
+        },
+        "plugin": {
+          "type": "object", "additionalProperties": false,
+          "required": ["displayName", "version", "buildId", "moduleSha256", "stateSchemaVersion"],
+          "properties": {
+            "displayName": { "$ref": "#/$defs/text" }, "version": { "$ref": "#/$defs/text" }, "buildId": { "$ref": "#/$defs/text" },
+            "moduleSha256": { "$ref": "#/$defs/sha256" }, "stateSchemaVersion": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "settings": {
+          "type": "object", "additionalProperties": false,
+          "description": "Static processed-render settings. Current parameter IDs use 0.01 increments; capture the saved/host values rather than rounded knob text. Automated settings require a future schema extension.",
+          "required": ["clarity", "silk", "air", "tame", "mix", "output", "bypass", "delta"],
+          "properties": {
+            "clarity": { "$ref": "#/$defs/percent" }, "silk": { "$ref": "#/$defs/percent" }, "air": { "$ref": "#/$defs/percent" }, "tame": { "$ref": "#/$defs/percent" }, "mix": { "$ref": "#/$defs/percent" },
+            "output": { "type": "number", "minimum": -18, "maximum": 18, "multipleOf": 0.01, "description": "Plugin Output in dB, before any comparison-only gain." },
+            "bypass": { "const": false }, "delta": { "const": false }
+          }
+        },
+        "audio": {
+          "type": "object", "additionalProperties": false,
+          "required": ["original", "processed", "measurementMethod"],
+          "properties": {
+            "original": { "$ref": "#/$defs/asset" }, "processed": { "$ref": "#/$defs/asset" },
+            "measurementMethod": { "$ref": "#/$defs/nullableText", "description": "Meter/tool version and integrated-loudness/true-peak method used on the full final excerpts." }
+          }
+        },
+        "engineerNote": { "$ref": "#/$defs/text" },
+        "quality": {
+          "type": "object", "additionalProperties": false,
+          "required": ["alignmentVerified", "settingsVerified", "listeningApproved", "loudnessDifferenceLu"],
+          "properties": {
+            "alignmentVerified": { "type": "boolean" }, "settingsVerified": { "type": "boolean" }, "listeningApproved": { "type": "boolean" },
+            "loudnessDifferenceLu": { "type": ["number", "null"], "minimum": 0, "description": "Absolute measured difference between the complete final original and processed excerpts." }
+          }
+        },
+        "rights": {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "recordingAndPerformance", "composition", "websiteStreaming", "promotionalUse", "displayNameAndCredits", "evidenceReference", "expiresAt"],
+          "properties": {
+            "status": { "enum": ["pending", "approved", "withdrawn"] },
+            "recordingAndPerformance": { "type": "boolean" }, "composition": { "type": "boolean" }, "websiteStreaming": { "type": "boolean" }, "promotionalUse": { "type": "boolean" }, "displayNameAndCredits": { "type": "boolean" },
+            "evidenceReference": { "$ref": "#/$defs/nullableText", "description": "Opaque reference to privately retained permissions; no documents, credentials or personal contact details in this file." },
+            "expiresAt": { "$ref": "#/$defs/nullableTime", "description": "Null only when reviewed rights have no expiry; enforce any restrictions in the private rights record." }
+          }
+        },
+        "publication": {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "approvedBy", "approvedAt", "approvedContentSha256"],
+          "properties": {
+            "status": { "enum": ["draft", "approved", "withdrawn"] },
+            "approvedBy": { "$ref": "#/$defs/nullableText" }, "approvedAt": { "$ref": "#/$defs/nullableTime" },
+            "approvedContentSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }], "description": "Approval binds the reviewed metadata/settings and exact asset hashes; defined in the plan." }
+          }
+        }
+      },
+      "allOf": [{
+        "if": { "properties": { "publication": { "properties": { "status": { "const": "approved" } } } } },
+        "then": {
+          "properties": {
+            "audio": { "properties": { "original": { "$ref": "#/$defs/publishableAsset" }, "processed": { "$ref": "#/$defs/publishableAsset" }, "measurementMethod": { "type": "string" } } },
+            "quality": { "properties": { "alignmentVerified": { "const": true }, "settingsVerified": { "const": true }, "listeningApproved": { "const": true }, "loudnessDifferenceLu": { "type": "number", "maximum": 0.2 } } },
+            "rights": { "properties": { "status": { "const": "approved" }, "recordingAndPerformance": { "const": true }, "composition": { "const": true }, "websiteStreaming": { "const": true }, "promotionalUse": { "const": true }, "displayNameAndCredits": { "const": true }, "evidenceReference": { "type": "string" } } },
+            "publication": { "properties": { "approvedBy": { "type": "string" }, "approvedAt": { "type": "string" }, "approvedContentSha256": { "type": "string" } } }
+          }
+        }
+      }]
+    }
+  }
+}

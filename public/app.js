@@ -17,7 +17,22 @@
   reduced.addEventListener('change',applyMotion);applyMotion();
   document.addEventListener('visibilitychange',()=>document.body.classList.toggle('page-hidden',document.hidden));
   const dialog=$('#interface-dialog');
-  $$('.product-image-button').forEach(button=>button.addEventListener('click',()=>dialog.showModal()));
+  const imageViewport=$('.interface-scroll');
+  const sizeButton=$('#interface-size');
+  function setInterfaceSize(full){
+    imageViewport?.classList.toggle('is-full-size',full);
+    sizeButton?.setAttribute('aria-pressed',String(full));
+    if(sizeButton)sizeButton.textContent=full?'Fit entire interface':'View at full size';
+    if($('#interface-help'))$('#interface-help').textContent=full?'Scroll or swipe to inspect every control.':'The complete interface. Enlarge to inspect the controls.';
+  }
+  sizeButton?.addEventListener('click',()=>setInterfaceSize(sizeButton.getAttribute('aria-pressed')!=='true'));
+  $$('.product-image-button').forEach(button=>button.addEventListener('click',()=>{
+    const image=dialog.querySelector('img[data-src]');
+    if(!image.hasAttribute('src'))image.src=image.dataset.src;
+    setInterfaceSize(window.matchMedia('(max-width:760px)').matches);
+    dialog.showModal();
+    imageViewport.scrollTo(0,0);
+  }));
   $('.dialog-close')?.addEventListener('click',()=>dialog.close());
   dialog?.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();});
   if($('.audio-console')){

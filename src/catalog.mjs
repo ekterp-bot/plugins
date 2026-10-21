@@ -1,3 +1,5 @@
+import productImages from './product-images.json' with { type: 'json' };
+
 export const brand = {
   name: 'Hex the Engineer',
   domain: 'hextheengineer.com',
@@ -12,11 +14,11 @@ export const brand = {
 export const products = [{
   id: 'nebula',
   slug: 'project-nebula',
-  name: 'Project Nebula',
+  name: 'ProjectNebula',
   wordmark: 'NEBULA',
   prefix: 'PROJECT',
   workingName: true,
-  category: 'Intelligent mix finish',
+  category: 'Intelligent Mix Finishing',
   summary: 'Bring detail into focus. Soften the edges. Open the top end. Four focused controls for the final tonal decisions.',
   shortDescription: 'A considered finishing pass for mixing engineers.',
   status: 'Private beta',
@@ -26,13 +28,10 @@ export const products = [{
   hostQualification: 'Wider DAW and operating-system qualification is in progress.',
   version: 'Public release pending',
   assets: {
-    interface: '/assets/plugin-interface.webp',
-    small: '/assets/plugin-interface-small.webp',
-    width: 2400,
-    height: 1760,
+    ...productImages,
     mark: '/assets/nebula-mark.svg',
   },
-  captureLabel: 'Actual compiled development interface',
+  captureLabel: 'Actual compiled interface · BP010 private beta',
   offer: { price: null, currency: null, checkoutUrl: null, trialUrl: null, downloadUrl: null },
   controls: [
     { id:'clarity', name:'Clarity', label:'DETAIL / DEFINITION', headline:'Bring detail<br>into focus.', description:'Shape low-mid weight and presence for a more defined finish.', detail:'A focused way to adjust definition. Listen to the body of the mix as you bring detail forward.', color:'#75e3e8' },

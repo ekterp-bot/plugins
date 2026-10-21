@@ -1,7 +1,7 @@
 # Hex the Engineer — plugin storefront
 
 A website for an independent audio-plugin brand, introducing
-Project Nebula as a finishing tool for mixing engineers. Project Nebula remains
+ProjectNebula as a finishing tool for mixing engineers. ProjectNebula remains
 a working name and private beta. Pricing, trials, downloads, audio comparisons
 and testimonials are explicitly unfinished; no checkout or public installer is
 connected.
@@ -10,7 +10,15 @@ Development is isolated on `codex/hex-plugin-storefront` in
 `C:\Users\ekter\.codex\worktrees\hex-plugins-website`. The preserved baseline and
 original checkout remain available for recovery.
 
-## Published — October 19, 2026
+## Current local review — October 21, 2026
+
+The approved BP010 interface now supplies the hero, product details and sharing
+card. This visual-finalization pass is **local only**. Do not push or deploy it
+without owner approval. See [implementation report](docs/VISUAL-FINALIZATION-REPORT.md),
+[image replacement guide](docs/PRODUCT-IMAGES.md), and
+[future-build roadmap](docs/FUTURE-BUILD-ROADMAP.md).
+
+## Published baseline — October 19, 2026
 
 The owner-approved website is live at
 [hextheengineer.com](https://hextheengineer.com), which redirects to `www`.

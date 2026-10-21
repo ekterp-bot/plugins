@@ -1,0 +1,54 @@
+{
+  "generation": "bp010-approved-icons",
+  "build": "BP010-0.1.0-Release-g9eda0638-sd2c7096d6719",
+  "width": 1200,
+  "height": 880,
+  "interface": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-1200.webp",
+  "small": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-768.webp",
+  "variants": [
+    {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-480.webp",
+      "width": 480
+    },
+    {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-768.webp",
+      "width": 768
+    },
+    {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-960.webp",
+      "width": 960
+    },
+    {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-1200.webp",
+      "width": 1200
+    }
+  ],
+  "full": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-full.webp",
+  "details": {
+    "clarity": {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-clarity-detail.webp",
+      "width": 274,
+      "height": 291
+    },
+    "silk": {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-silk-detail.webp",
+      "width": 274,
+      "height": 291
+    },
+    "air": {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-air-detail.webp",
+      "width": 274,
+      "height": 291
+    },
+    "tame": {
+      "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-tame-detail.webp",
+      "width": 274,
+      "height": 291
+    }
+  },
+  "social": {
+    "src": "/assets/products/nebula/bp010-approved-icons/projectnebula-social.jpg",
+    "width": 1200,
+    "height": 630
+  }
+}

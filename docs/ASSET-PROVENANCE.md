@@ -1,5 +1,11 @@
 # Hex the Engineer website — asset provenance
 
+**Current product selection, October 21:** see [approved image pipeline](PRODUCT-IMAGES.md).
+The genuine final BP010 interface replaces the historical BP009 captures below.
+Original BP009 WebPs and atmospheric source WebPs are preserved outside `public/`.
+The following October 19 record is retained as history; its installed-build and
+served-image descriptions are no longer current. Parent-logo provenance remains applicable.
+
 Recorded October 19, 2026, America/Los_Angeles. All work described here is confined
 to the isolated `codex/hex-plugin-storefront` website worktree. The EarWax VST3
 engineering checkout and previous Nebula prototype were read only.

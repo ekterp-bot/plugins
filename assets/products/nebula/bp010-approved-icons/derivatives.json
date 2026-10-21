@@ -1,0 +1,72 @@
+[
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-480.webp",
+    "width": 480,
+    "height": 352,
+    "bytes": 33986,
+    "sha256": "ae6c0a862f8645915b29b3ed85bb21bdf11700252f2e82dfdbda7c22b172a275"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-768.webp",
+    "width": 768,
+    "height": 563,
+    "bytes": 72798,
+    "sha256": "8ed1dff92b69d9968720737f6a273503a7ed2d28b05e03313afb09b17fe51717"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-960.webp",
+    "width": 960,
+    "height": 704,
+    "bytes": 104682,
+    "sha256": "19e3943709b27543343ef898df965025717da51fab8287c8fa6748475cadad30"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-1200.webp",
+    "width": 1200,
+    "height": 880,
+    "bytes": 146100,
+    "sha256": "3d37ce3d975298d00a20dc23e8b008fb1cd5da3203b1b16f0daeecb2e86e22d7"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-interface-full.webp",
+    "width": 1200,
+    "height": 880,
+    "bytes": 524488,
+    "sha256": "f8d6bfafd5be7beeeeb6549d6b9686db3f86a2901000f6da7c31eda18f0c732a"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-clarity-detail.webp",
+    "width": 274,
+    "height": 291,
+    "bytes": 67442,
+    "sha256": "ed2a7bf4f0367e5d67bbedffbda5ee0a81bc20919be55c36647380ccf7e36d43"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-silk-detail.webp",
+    "width": 274,
+    "height": 291,
+    "bytes": 51922,
+    "sha256": "db6cfc3cb86fdb6d9a0fd3300acf9d4ab29e930f78dd9218e15948eb8812cc9c"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-air-detail.webp",
+    "width": 274,
+    "height": 291,
+    "bytes": 52942,
+    "sha256": "9c2bde8742f1f0e5aa18ed728cb7f9e788c0c9ebba54f200f84a8f14d75e8331"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-tame-detail.webp",
+    "width": 274,
+    "height": 291,
+    "bytes": 51690,
+    "sha256": "bd7bbfd6f2b687721373070acd2524d3affd78d86ab3b6e0c62eed4b867ac7aa"
+  },
+  {
+    "path": "/assets/products/nebula/bp010-approved-icons/projectnebula-social.jpg",
+    "width": 1200,
+    "height": 630,
+    "bytes": 177128,
+    "sha256": "7734f82b4657faffd0259304fb4035abfbcb69bbc86a69ffc2813b08c11f10ba"
+  }
+]

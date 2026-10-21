@@ -41,7 +41,7 @@ test("generated production metadata is public while local and preview builds sta
           assert.ok(html.includes(`<meta name="robots" content="${indexable ? "index,follow" : "noindex,nofollow"}">`), route);
           assert.ok(html.includes(`<link rel="canonical" href="${url}">`), route);
           assert.ok(html.includes(`<meta property="og:url" content="${url}">`), route);
-          assert.ok(html.includes(`<meta property="og:image" content="${origin}/assets/plugin-interface.webp">`), route);
+          assert.ok(html.includes(`<meta property="og:image" content="${origin}/assets/products/nebula/bp010-approved-icons/projectnebula-social.jpg">`), route);
           assert.match(html, /<meta property="og:title" content="[^"]+">/);
           assert.match(html, /<meta property="og:description" content="[^"]+">/);
           assert.match(html, /PRODUCT PREVIEW/);
