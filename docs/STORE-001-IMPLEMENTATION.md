@@ -5,8 +5,12 @@ Checkpoint: **October 21, 2026 Pacific / October 22 UTC**. Work is in the
 `hex-store-001-preview` (`pujpznngwcgutujqgmkp`). The approved API origins are
 `http://localhost:4176` and the verified private Vercel branch alias
 `https://hex-solutions-git-codex-hex-plugin-fdcb17-ekterp-bots-projects.vercel.app`.
-The production website has not received these changes; hosted deployment and
-validation are pending at this checkpoint.
+The protected private deployment of commit **`5b219cb`** is confirmed at that
+branch alias, and its focused hosted HTTPS smoke checks passed. The production
+website has not received these changes. Preview SMTP is configured, the real
+owner completed email-code sign-in, and a trusted operator bootstrapped the
+verified owner as the sole administrator. The real owner's management,
+invitation, redemption and private test-download workflow passed.
 
 ## Implemented scope
 
@@ -71,8 +75,13 @@ The dedicated Supabase URL, public key, service key and independent invitation
 pepper have also been configured as branch-specific Vercel preview variables.
 Production variables were not configured. The backend rejects a present
 `VERCEL_ENV` other than `preview`; the hosted preview remains behind Vercel's
-existing authentication protection. Its deployment still needs end-to-end
-validation before external use.
+standard authentication protection. An anonymous request to `/account` returned
+**302 to Vercel SSO**, while the authorized existing Vercel browser session could
+access the application. No protection bypass secret or protection change was
+used. The focused HTTPS smoke passed on the exact branch alias above; use that
+alias because the API deliberately does not accept arbitrary deployment hosts.
+The synthetic smoke did not test email delivery. Subsequent sender, real-owner
+sign-in, bootstrap and management workflow evidence is recorded below.
 
 The preview database already has these migrations; inspect migration history
 before applying anything to a fresh environment:
@@ -86,26 +95,58 @@ checks used the dedicated hosted preview. This does not require production
 credentials or a production database change. See the
 [database contract](STORE-001-DATABASE.md) for the schema and grants.
 
-## Email and owner access still need final verification
+## Email delivery and verified owner access
 
-At this checkpoint, SMTP/sender setup and **actual owner inbox delivery** remain
-pending. Supabase Auth's Magic Link template must include `{{ .Token }}` for the
-code-entry UI. Configure sender DNS, SMTP and allowed URLs in Supabase, then
-verify delivery and sign-in with the real owner before inviting customers.
-Setting the old support-form environment variables does not configure Auth
-email, and `api/support.js` remains deliberately unavailable.
+Resend verified `notify.hextheengineer.com` at **04:28 UTC on October 22**.
+A sending-only key restricted to that exact subdomain was saved to the dedicated
+Supabase preview's SMTP settings, and the saved configuration was confirmed
+after reload. The sender is `accounts@notify.hextheengineer.com`, using
+`smtp.resend.com` on port **465**. No key value is recorded in these notes.
 
-The intended owner email is `hexsolutions.dev@gmail.com`. After that account
-actually verifies its address, a trusted operator must confirm the corresponding
-Auth user ID and explicitly insert that ID into `store_admins` with a bootstrap
-reason. There is no automatic email-based promotion. Temporary synthetic test
-administrator membership must be removed after QA; fixture grants and audit
-evidence are retained. Provider-generated test OTPs establish the real Auth
-exchange, not email delivery to that owner or to testers.
+Both the Signup confirmation and Magic Link templates were saved from
+`supabase/templates/login.html`, including `{{ .Token }}` for the code-entry UI.
+The configured code is **8 digits**, valid for **600 seconds**. The Auth Site URL
+is the exact protected branch alias above followed by `/account`.
+
+The real owner's code was requested through the hosted account UI. Resend
+reported **Delivered at 04:30 UTC**, and the message body was privately checked
+to contain the code. The owner entered the inbox code and confirmed sign-in;
+the hosted library was observed and the matching Auth identity's verification
+and sign-in were confirmed at **04:31:36 UTC**. The code and message contents
+are not stored in this document.
+The old support-form environment variables are unrelated to Auth email, and
+`api/support.js` remains deliberately unavailable.
+
+The verified owner is `hexsolutions.dev@gmail.com`. A trusted conditional SQL
+insertion added that exact verified Auth identity to `store_admins` as the
+**sole administrator** at
+**04:31:54.633542 UTC**, recording a bootstrap reason. There is no automatic
+email-based promotion. Temporary synthetic test administrator membership was
+removed after QA; fixture grants and audit evidence are retained. The earlier
+provider-generated test OTP checks are separate from the real-owner email and
+sign-in evidence.
+
+The real owner's `/admin` interface loaded successfully. Browser automation in
+that verified owner session created a ProjectNebula invitation bound to the
+owner's own email, then redeemed it through `/account` at **04:32:54.550958 UTC**. The permanent
+ProjectNebula library appeared, and the browser downloaded the **183-byte text
+test artifact** as `nebula-store001-test (1).txt`. Its SHA-256 was
+`d88198c65bda8e1cd2410a4e00aaff4b623fecbbfe0742e8dd5f4ac6ee97721e`, matching
+the approved release. This was a distribution test, not a plugin installer.
+
+SQL confirmed one sole administrator, one permanent owner ProjectNebula grant,
+one owner-created and redeemed invitation, its `invite_created` audit event,
+and one owner download authorization. Reloading the owner library retained the
+grant and verified session. The three existing synthetic permanent grants
+remain. See `artifacts/store-001/owner-browser-smoke.json`; screenshots are saved
+under `artifacts/store-001/screenshots/` as `verified-owner-admin.png` and
+`verified-owner-library.png`. This owner flow used **one real inbox code**;
+repeated sign-in was exercised earlier with synthetic accounts and has not been
+separately repeated for the real owner.
 
 ## Create an invitation and send it personally
 
-Once owner sign-in is verified:
+In the private preview:
 
 1. Open `/admin`, select **Invitations**, choose ProjectNebula and enter the
    intended engineer's email if the code should be restricted to that address.
@@ -114,7 +155,8 @@ Once owner sign-in is verified:
    the server returns the raw code only once and stores only its HMAC verifier.
 3. Send the account URL and code personally through your chosen channel. The
    portal does not automatically send invitations. A localhost URL is usable
-   only on this computer; external testers need an approved hosted preview.
+   only on this computer. The current hosted preview requires Vercel team
+   access; external tester access needs a separately approved sharing setup.
 4. The engineer verifies that email, redeems the code and receives a permanent
    grant. Returning later requires sign-in, not another invitation.
 
@@ -203,12 +245,18 @@ permanent grants do not depend on either invitation secret after redemption.
 | Database | **46 original PostgreSQL assertions + 7 export-audit assertions passed**, using real role permissions and transactional fixtures. These do not establish email delivery or backup recovery. |
 | Local regression tests | **12 existing tests + 5 focused pagination/importer tests passed** (`npm test`, 17 total). Pagination guard tests use controlled page results and are distinct from live provider evidence. |
 | Trusted importer recovery | Two actual retries verified the existing private flagship artifact and returned the same release without overwrite/duplication. See `artifacts/store-001/importer-review-results.json`; this is retry evidence, not a fresh-registration or real-installer signing claim. |
-| Browser and layout | Real synthetic-account sign-in/out, owner screens, customer admin denial and library verified in Chrome. A browser-triggered text download matched its expected SHA-256. Desktop and actual 390 px mobile layouts were inspected; full-page screenshots are in `artifacts/store-001/screenshots/`, including `projectnebula-library-desktop-full.jpg` and `projectnebula-library-mobile-full.jpg`. See `browser-qa-report.json` and `browser-download-proof.json`. |
-| Fixture cleanup | Temporary synthetic administrator membership removed; its still-valid session receives `403 ADMIN_REQUIRED`. Three synthetic permanent grants and audit evidence are preserved. The real owner has not been automatically verified or promoted. |
+| Browser and layout | Real synthetic-account sign-in/out, synthetic administrator screens, customer admin denial and library verified in Chrome. A browser-triggered text download matched its expected SHA-256. Desktop and actual 390 px mobile layouts were inspected; full-page screenshots are in `artifacts/store-001/screenshots/`, including `projectnebula-library-desktop-full.jpg` and `projectnebula-library-mobile-full.jpg`. See `browser-qa-report.json` and `browser-download-proof.json`. |
+| Protected hosted deployment | Commit **`5b219cb`** is deployed at the exact private branch alias recorded above. Standard Vercel protection remains enabled: anonymous `/account` returned **302 to `https://vercel.com/sso-api`**. See `artifacts/store-001/hosted-protection.json`. No production changes or protection bypass were made. |
+| Hosted HTTPS smoke | **8 focused browser checks passed** through the authorized Vercel session: account session, synthetic auth-start, provider-generated fixture OTP verification, ProjectNebula library, private test download, customer admin denial, sign-out and the fresh signed-out account form. The downloaded `0.1.0-store001.test` text artifact was **183 bytes** and matched its published SHA-256; it is not an installer. No browser console errors were observed. No administrator membership was restored. See `artifacts/store-001/hosted-browser-smoke.json` and `screenshots/hosted-projectnebula-library-desktop-full.jpg`, `hosted-projectnebula-download-success.jpg`, `hosted-customer-admin-denied.jpg` and `hosted-account-signed-out.jpg` under that evidence directory. This did not repeat mobile QA or prove SMTP delivery. |
+| Sender and real-owner access | Resend verified the exact sending subdomain at **04:28 UTC**; dedicated preview SMTP settings and both code templates were saved and confirmed. The hosted UI requested the owner's code email, which Resend reported **Delivered at 04:30 UTC**; its body was privately checked to contain the code. Real-owner sign-in and the matching verified Auth identity were confirmed at **04:31:36 UTC**. A trusted conditional SQL insertion bootstrapped that identity as the sole administrator at **04:31:54.633542 UTC**, with a recorded reason. |
+| Real-owner management and download | The actual owner opened `/admin`, created an email-bound ProjectNebula invitation, redeemed it through `/account` at **04:32:54.550958 UTC**, viewed the permanent library and downloaded the **183-byte text test artifact** with the expected SHA-256. SQL confirmed the sole administrator, owner grant, redeemed invitation, creation audit and download authorization; three synthetic grants remain. A library reload retained the grant and verified session. See `artifacts/store-001/owner-browser-smoke.json` and `artifacts/store-001/screenshots/verified-owner-admin.png` / `verified-owner-library.png`. This flow used one real inbox code; repeat sign-in evidence remains from synthetic accounts. |
+| Fixture cleanup | Temporary synthetic administrator membership removed; its still-valid session receives `403 ADMIN_REQUIRED`. Three synthetic permanent grants and audit evidence are preserved. Real-owner administrator access was subsequently granted through the explicit verified-identity bootstrap above. |
 
-Actual owner email delivery, final owner bootstrap and hosted private deployment
-are not established at this checkpoint. Update those outcomes only after their
-separate checks complete.
+The protected preview's hosted smoke, sender configuration, real-owner email
+delivery, verified sign-in, explicit owner bootstrap, invitation redemption and
+private text download are established. The preview retains standard Vercel
+protection. Real installer validation/distribution and a full backup-restore
+exercise remain separate work; real-owner repeat sign-in has not been repeated.
 Commerce, discount checkout, two-computer enforcement, production publication,
 external installer distribution and plugin engineering remain outside STORE-001.
 See the [commerce and activation plan](STORE-001-COMMERCE-AND-ACTIVATION.md).

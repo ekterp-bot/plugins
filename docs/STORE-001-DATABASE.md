@@ -129,12 +129,25 @@ HTTP/provider checks, including concurrent two-account redemption (one grant),
 real Auth OTP/session revocation, private file bytes/SHA-256, signed-link expiry
 and renewal, repeated downloads and ownership after actual invitation expiry.
 Results and private fixture sessions are under ignored `artifacts/store-001/`.
-Provider-generated OTPs do not establish outbound email delivery. After browser
-verification, only the temporary synthetic administrator membership was removed
-by trusted SQL. The preview has zero administrators until the real owner is
-verified; the three permanent fixture grants (including flagship `nebula`) and
-associated evidence are retained. A final HTTP request with the former test
-administrator's still-valid session returns 403 `ADMIN_REQUIRED`.
+Provider-generated OTPs do not establish outbound email delivery. After the
+synthetic browser verification, the temporary synthetic administrator membership
+was removed by trusted SQL. At that historical checkpoint the preview had zero
+administrators; the three permanent fixture grants (including flagship `nebula`)
+and associated evidence were retained. A final HTTP request with the former test
+administrator's still-valid session returned 403 `ADMIN_REQUIRED`.
+
+Subsequently, the real owner completed inbox-code sign-in at **04:31:36 UTC on
+October 22, 2026**. A trusted conditional SQL insertion bootstrapped the verified
+owner Auth identity as the **sole current administrator** at
+**04:31:54.633542 UTC**, with a recorded reason. Browser automation in that
+verified owner session created an email-bound ProjectNebula invitation in the admin UI and redeemed it
+through the customer UI at **04:32:54.550958 UTC**. SQL confirmed one permanent
+owner grant, one owner-created and redeemed invitation, one `invite_created`
+audit event and one owner download authorization. The browser separately
+verified the downloaded 183-byte text test artifact against its expected SHA-256.
+The three synthetic permanent grants remain; no test administrator membership
+was restored. See [implementation and operating notes](STORE-001-IMPLEMENTATION.md)
+for sender configuration, owner-flow screenshots and validation boundaries.
 
 The initial empty-project advisor scan reported no security warnings/errors.
 After Auth integration, the current scan also reports the provider configuration
