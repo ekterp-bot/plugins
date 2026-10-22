@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import supportHandler from '../api/support.js';
+import storeHandler from '../api/store.js';
 const root = path.resolve(fileURLToPath(new URL('../dist/',import.meta.url)));
 const port = Number(process.env.PORT || 4174);
 const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.jpg':'image/jpeg','.png':'image/png','.ttf':'font/ttf','.txt':'text/plain; charset=utf-8'};
@@ -14,6 +15,7 @@ const server = http.createServer(async(req,res)=>{
   res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
   let pathname;
   try { pathname = decodeURIComponent(new URL(req.url,'http://localhost').pathname); } catch {res.writeHead(400).end();return;}
+  if (pathname === '/api/store') return storeHandler(req,res);
   if (pathname === '/api/support') {
     let bytes=0;const chunks=[];
     for await (const chunk of req) {bytes+=chunk.length;if(bytes>12000){res.writeHead(413,{'Content-Type':'application/json'}).end(JSON.stringify({ok:false,sent:false,message:'Request is too large.'}));return;}chunks.push(chunk);}

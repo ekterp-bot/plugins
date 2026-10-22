@@ -9,7 +9,8 @@ const os = require("node:os");
 
 const root = path.resolve(__dirname, "..");
 const origin = "https://www.hextheengineer.com";
-const routes = ["/", "/plugins", "/downloads", "/support", "/about", "/plugins/project-nebula"];
+const privateRoutes = ["/account", "/admin"];
+const routes = ["/", "/plugins", "/downloads", "/support", "/about", ...privateRoutes, "/plugins/project-nebula"];
 
 test("generated production metadata is public while local and preview builds stay excluded", async t => {
   // Isolate build output so running tests cannot replace a prepared deployment.
@@ -38,7 +39,8 @@ test("generated production metadata is public while local and preview builds sta
         for (const route of routes) {
           const html = await readFile(path.join(dist, route, "index.html"), "utf8");
           const url = new URL(route, origin).href;
-          assert.ok(html.includes(`<meta name="robots" content="${indexable ? "index,follow" : "noindex,nofollow"}">`), route);
+          const isPrivate = privateRoutes.includes(route);
+          assert.ok(html.includes(`<meta name="robots" content="${indexable && !isPrivate ? "index,follow" : "noindex,nofollow"}">`), route);
           assert.ok(html.includes(`<link rel="canonical" href="${url}">`), route);
           assert.ok(html.includes(`<meta property="og:url" content="${url}">`), route);
           assert.ok(html.includes(`<meta property="og:image" content="${origin}/assets/products/nebula/bp010-approved-icons/projectnebula-social.jpg">`), route);
@@ -46,7 +48,12 @@ test("generated production metadata is public while local and preview builds sta
           assert.match(html, /<meta property="og:description" content="[^"]+">/);
           assert.match(html, /PRODUCT PREVIEW/);
           assert.doesNotMatch(html, /LOCAL DESIGN PREVIEW/);
-          assert.match(html, /Private beta · Sales and downloads are not open/);
+          assert.match(html, isPrivate ? /Private beta · Authorized account access/ : /Private beta · Sales and downloads are not open/);
+          if (isPrivate) {
+            assert.match(html, /<script src="\/portal\.js" defer><\/script>/);
+            assert.match(html, /<link rel="stylesheet" href="\/portal\.css">/);
+            assert.match(html, /id="portal-workspace" class="portal-workspace" hidden/);
+          }
         }
 
         const missingPage = await readFile(path.join(dist, "404.html"), "utf8");
@@ -54,11 +61,11 @@ test("generated production metadata is public while local and preview builds sta
         assert.doesNotMatch(missingPage, /rel="canonical"|property="og:url"/);
         const robots = await readFile(path.join(dist, "robots.txt"), "utf8");
         if (indexable) {
-          assert.equal(robots, `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
+          assert.equal(robots, `User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /admin\nDisallow: /api/\nSitemap: ${origin}/sitemap.xml\n`);
           const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");
           const locations = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
-          assert.deepEqual(locations, routes.map(route => new URL(route, origin).href));
-          assert.doesNotMatch(sitemap, /404|api\/|localhost|vercel\.app/);
+          assert.deepEqual(locations, routes.filter(route => !privateRoutes.includes(route)).map(route => new URL(route, origin).href));
+          assert.doesNotMatch(sitemap, /404|api\/|\/account|\/admin|localhost|vercel\.app/);
         } else {
           assert.equal(robots, "User-agent: *\nDisallow: /\n");
           await assert.rejects(access(path.join(dist, "sitemap.xml")), { code: "ENOENT" });

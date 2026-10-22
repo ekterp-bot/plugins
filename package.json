@@ -7,7 +7,17 @@
     "build": "node tools/build.mjs",
     "dev": "node tools/build.mjs && node tools/server.mjs",
     "preview": "node tools/server.mjs",
+    "store:dev": "node tools/build.mjs && node --env-file=.env.store tools/server.mjs",
+    "store:import-release": "node --env-file=.env.store tools/store-import-release.mjs",
     "test": "node --test tests/*.test.cjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0"
+  },
+  "devDependencies": {
+    "supabase": "2.121.0"
+  }
 }

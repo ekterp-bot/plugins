@@ -2,13 +2,25 @@
 
 A website for an independent audio-plugin brand, introducing
 ProjectNebula as a finishing tool for mixing engineers. ProjectNebula remains
-a working name and private beta. Pricing, trials, downloads, audio comparisons
-and testimonials are explicitly unfinished; no checkout or public installer is
-connected.
+a working name and private beta. STORE-001 adds a private customer-account,
+complimentary-entitlement and authorized-download foundation on this branch.
+Checkout, trials, public installers, audio comparisons and testimonials remain
+unavailable. The live production site does not include STORE-001 yet.
 
 Development is isolated on `codex/hex-plugin-storefront` in
 `C:\Users\ekter\.codex\worktrees\hex-plugins-website`. The preserved baseline and
 original checkout remain available for recovery.
+
+## STORE-001 private preview
+
+See [implementation and setup](docs/STORE-001-IMPLEMENTATION.md),
+[database contract](docs/STORE-001-DATABASE.md), and
+[commerce and activation plan](docs/STORE-001-COMMERCE-AND-ACTIVATION.md).
+The customer portal is `/account`; owner management is `/admin`.
+Use `npm ci`, configure the ignored `.env.store` from `.env.example`, then run
+`npm run store:dev` and open `http://localhost:4176/account`.
+The preview uses its dedicated Supabase project and a clearly labeled text
+artifact. Actual installers require a separately approved, verified release.
 
 ## Current published version — October 21, 2026
 
@@ -47,8 +59,9 @@ and email delivery remain inactive.
 
 ## Run locally
 
-Use **Node.js 22 or newer** with npm. There are no package dependencies to
-install and no API keys, `.env` file or external service is needed.
+Use **Node.js 22 or newer** with npm and run `npm ci` first. The marketing pages
+work without API credentials. Account functionality requires the private
+STORE-001 setup described above.
 
 ```powershell
 cd C:\Users\ekter\.codex\worktrees\hex-plugins-website
@@ -85,7 +98,8 @@ not its generated HTML. The build replaces only this checkout's `dist` directory
 ## Routes and source
 
 The site includes `/`, `/plugins`, `/plugins/project-nebula`, `/downloads`,
-`/support`, `/about`, and a 404 page.
+`/support`, `/about`, `/account`, `/admin`, and a 404 page. Account and admin
+routes have `noindex` metadata and are excluded from the sitemap.
 
 | Location | Purpose |
 | --- | --- |
