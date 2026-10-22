@@ -2,13 +2,14 @@ import { createClient } from '@supabase/supabase-js';
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { Buffer } from 'node:buffer';
 import { STORE_ALLOWED_ORIGINS, STORE_MAX_BODY_BYTES, STORE_PRICE_CURRENCIES, getStoreConfig, cookieNames } from './store-config.mjs';
+import { CUSTOMER_RELEASE_FIELDS, RELEASE_POLICY_FIELDS, releaseReadiness, customerRelease, adminRelease } from './store-release-policy.mjs';
 
 const AUTH_OPTIONS = { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false };
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const PRODUCT_ID = /^[a-z][a-z0-9_-]{0,63}$/;
 const TOKEN = /^[A-Za-z0-9_-]{43}$/;
 const INVITE_FIELDS = 'id,product_id,intended_email,expires_at,created_by,created_at,revoked_at,revoked_by,redeemed_at,redeemed_by';
-const PUBLIC_RELEASE_FIELDS = 'id,product_id,version,coverage_major,platform,format,channel,artifact_kind,status,file_size,sha256,release_notes,installation_notes,signing_status,approved_for_distribution,created_at';
+const LIBRARY_RELEASE_FIELDS = [...CUSTOMER_RELEASE_FIELDS, ...RELEASE_POLICY_FIELDS].join(',');
 const PRODUCT_FIELDS = ['id', 'name', 'description', 'status', 'regular_price_minor', 'promotional_price_minor', 'currency', 'checkout_price_id'];
 const OPS = new Map([
   ['session', 'GET'], ['auth-start', 'POST'], ['auth-verify', 'POST'], ['logout', 'POST'],
@@ -215,7 +216,7 @@ async function library(ctx, user) {
     const group = ids.slice(offset, offset + 50);
     const [productPage, releasePage] = await Promise.all([
       readAllStoreRows((from, to) => ctx.db.from('store_products').select('id,name,description,status', { count: 'exact' }).in('id', group).order('id').range(from, to)),
-      readAllStoreRows((from, to) => ctx.db.from('store_releases').select(PUBLIC_RELEASE_FIELDS, { count: 'exact' }).in('product_id', group).eq('status', 'published').eq('approved_for_distribution', true).order('created_at', { ascending: false }).order('id').range(from, to)),
+      readAllStoreRows((from, to) => ctx.db.from('store_releases').select(LIBRARY_RELEASE_FIELDS, { count: 'exact' }).in('product_id', group).eq('status', 'published').eq('approved_for_distribution', true).order('created_at', { ascending: false }).order('id').range(from, to)),
     ]);
     products.push(...productPage); releases.push(...releasePage);
     if (releases.length > 20000) throw new StoreError(409, 'LIBRARY_REQUIRES_PAGING', 'This library needs a paged view. Contact support.');
@@ -225,7 +226,7 @@ async function library(ctx, user) {
     ...grant, grant_type: grant.source, product: productMap.get(grant.product_id),
     releases: releases.filter(release => release.product_id === grant.product_id && release.coverage_major === grant.coverage_major
       && productMap.get(grant.product_id)?.status !== 'unavailable'
-      && (release.artifact_kind === 'test' || release.signing_status === 'verified')).map(release => ({ ...release, notes: release.release_notes })),
+      && releaseReadiness(release).ready).map(customerRelease),
   })) };
 }
 async function adminData(ctx) {
@@ -236,7 +237,7 @@ async function adminData(ctx) {
     rows('store_entitlements', '*', 'granted_at'), rows('store_releases', '*', 'created_at'),
     rows('store_download_events', '*', 'authorized_at'), rows('store_admin_audit', '*', 'created_at'),
   ]);
-  return { products, invitations, entitlements, releases, downloads, audit };
+  return { products, invitations, entitlements, releases: releases.map(adminRelease), downloads, audit };
 }
 async function saveProduct(ctx, user, data) {
   allowFields(data, PRODUCT_FIELDS);
@@ -346,6 +347,9 @@ export async function handleStoreRequest(request) {
       allowFields(data, ['release_id']); uuid(data.release_id);
       await rate(ctx, 'download-links', user.id, 30, 60);
       const authorized = await mutation(ctx, 'store_authorize_download', { p_user_id: user.id, p_release_id: data.release_id }, 'This download is unavailable for this account.', 'DOWNLOAD_UNAVAILABLE', 403);
+      if (authorized?.release?.status !== 'published' || !releaseReadiness(authorized.release).ready) {
+        throw new StoreError(403, 'DOWNLOAD_UNAVAILABLE', 'This download is unavailable for this account.');
+      }
       const seconds = Math.min(60, Math.floor((Date.parse(authorized.expires_at) - Date.now()) / 1000));
       if (seconds < 1) throw unavailable();
       const signed = await ctx.db.storage.from(authorized.bucket).createSignedUrl(authorized.object_key, seconds, { download: true });
@@ -383,7 +387,7 @@ export async function handleStoreRequest(request) {
     }
     if (op === 'admin-release') {
       validateReleaseStatus(data);
-      return respond(ctx, { release: await mutation(ctx, 'store_admin_release', { p_actor: user.id, p_data: data }) });
+      return respond(ctx, { release: adminRelease(await mutation(ctx, 'store_admin_release', { p_actor: user.id, p_data: data })) });
     }
     throw new StoreError(404, 'NOT_FOUND', 'That account operation is unavailable.');
   } catch (error) {
