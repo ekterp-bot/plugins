@@ -5,7 +5,7 @@
   const adminMode = root.dataset.portal === 'admin';
   const $ = (selector) => root.querySelector(selector);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const state = { session:null, csrf:null, view:adminMode?'overview':'library', email:'', library:[], admin:null };
+  const state = { session:null, csrf:null, view:adminMode?'overview':'library', email:'', library:[], admin:null, dataStatus:'idle', dataError:'' };
   const date = value => { if (!value) return '—'; const d = new Date(value); return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); };
   const bytes = value => Number(value) >= 1000000 ? `${(Number(value)/1000000).toFixed(2)} MB` : Number(value) >= 1000 ? `${(Number(value)/1000).toFixed(1)} KB` : `${Math.max(0,Number(value || 0))} bytes`;
   const label = value => String(value || '').replace(/[_-]/g,' ');
@@ -63,6 +63,7 @@
     finally { controls.forEach((el,i)=>el.disabled=previous[i]);control?.removeAttribute('aria-busy'); }
   }
   async function bootstrap() {
+    state.dataStatus='idle';state.dataError='';
     $('#session-loading').hidden=false;$('#session-retry').hidden=true;
     $('#email-form').hidden=true;$('#code-form').hidden=true;
     try {
@@ -79,21 +80,30 @@
         root.querySelectorAll('[data-view]').forEach(el=>el.disabled=true);return;
       }
       root.querySelectorAll('[data-view]').forEach(el=>el.disabled=false);
-      await loadData();render();
+      await loadData();
     } catch(error) {
+      state.dataStatus='error';state.dataError=error.message;
       if (state.session?.user) { $('#portal-content').innerHTML=empty('We couldn’t load your workspace.',error.message,button('Try again','data-action="reload"')); }
       else { $('#portal-auth').hidden=false;$('#portal-workspace').hidden=true;notice('#auth-message',error.message,'error');$('#session-retry').hidden=false; }
     } finally {$('#session-loading').hidden=true;}
   }
   async function loadData() {
-    if (adminMode) state.admin=await api('admin');
-    else {const result=await api('library');state.library=Array.isArray(result.entitlements)?result.entitlements:[];}
+    state.dataStatus='loading';state.dataError='';render();
+    try {
+      if (adminMode) state.admin=await api('admin');
+      else {const result=await api('library');state.library=Array.isArray(result.entitlements)?result.entitlements:[];}
+      state.dataStatus='ready';
+    } catch(error) {state.dataStatus='error';state.dataError=error.message;throw error;}
+    finally {render();}
   }
   function setView(view) {state.view=view;notice('#workspace-message','');render();$('#portal-content h2')?.focus({preventScroll:true});}
   function render() {
     root.querySelectorAll('[data-view]').forEach(el=>{if(el.dataset.view===state.view)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
     const content=$('#portal-content');
-    if(adminMode) { if(!state.session?.isAdmin)return; const views={overview:renderOverview,products:renderProducts,invitations:renderInvitations,releases:renderReleases,activity:renderActivity};content.innerHTML=(views[state.view]||renderOverview)(); }
+    if(adminMode && !state.session?.isAdmin)return;
+    if(state.dataStatus==='error') {content.innerHTML=empty('We couldn’t load your workspace.',state.dataError,button('Try again','data-action="reload"'));return;}
+    if(state.dataStatus!=='ready') {content.innerHTML='<div class="portal-loading" role="status"><span class="portal-spinner" aria-hidden="true"></span>Loading your workspace…</div>';return;}
+    if(adminMode) { const views={overview:renderOverview,products:renderProducts,invitations:renderInvitations,releases:renderReleases,activity:renderActivity};content.innerHTML=(views[state.view]||renderOverview)(); }
     else {const views={library:renderLibrary,redeem:renderRedeem,profile:renderProfile};content.innerHTML=(views[state.view]||renderLibrary)();}
   }
   function renderLibrary() {
@@ -150,7 +160,7 @@
   function downloadTitle(download) {const release=download.release || (state.admin?.releases || []).find(r=>r.id===download.release_id);return release?`${productName(release)} · ${release.version}`:download.release_id || 'Download link';}
   function records(rows,convert) {return rows.length?`<div class="activity-list">${rows.map(row=>{const r=convert(row);return `<article><div><h4>${esc(r.title)}</h4><p>${esc(r.sub)}</p><small>${esc(r.detail)}</small></div>${badge(r.tag)}</article>`;}).join('')}</div>`:empty('Nothing to show yet.','New activity will appear here.');}
   function mountEditor(html) {const mount=$('#editor-mount');mount.innerHTML=html;mount.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});mount.querySelector('input:not([type="hidden"]),select,textarea')?.focus({preventScroll:true});}
-  async function refresh(message) {await loadData();render();if(message)notice('#workspace-message',message,'success');}
+  async function refresh(message) {await loadData();if(message)notice('#workspace-message',message,'success');}
 
   $('#email-form').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget;const email=new FormData(form).get('email').trim();run(form,async()=>{const result=await api('auth-start',{email});state.email=email;form.hidden=true;$('#code-form').hidden=false;$('#code-recipient').textContent=`Enter the code sent to ${email}.`;notice('#auth-message',result.message || 'If this address can receive sign-in codes, one is on its way.');$('#sign-in-code').focus();},'#auth-message');});
   $('#code-form').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget;const token=new FormData(form).get('token').trim();run(form,async()=>{await api('auth-verify',{email:state.email,token});form.reset();notice('#auth-message','');await bootstrap();},'#auth-message');});

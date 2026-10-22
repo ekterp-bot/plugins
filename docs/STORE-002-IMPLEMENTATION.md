@@ -124,9 +124,10 @@ and leaves status draft. It was not run for the real release in this pass.
   application. Includes unsigned private-beta approval, stable rejection, missing
   gate rejection, forced draft insertion, immutable evidence, owner restrictions,
   permanent redemption and download authorization. Test fixtures did not persist.
-- 16 focused Node assertions passed for importer/approval input, safe customer
+- 18 focused Node checks passed for importer/approval input, safe customer
   projection, gate combinations, and ZIP bounds/identity. Includes a forged
-  expansion-length regression and protection against output overwrite.
+  expansion-length regression, protection against output overwrite, and two
+  deferred-request regressions for navigation during owner-data loading/error.
 - 15 real HTTP/provider checks passed: existing synthetic customer OTP login,
   permanent grant retention, three repeat test download authorizations, stored
   test bytes matching SHA-256, unauthorized/non-owner denial, private-field
@@ -137,7 +138,7 @@ and leaves status draft. It was not run for the real release in this pass.
   reached Ready (`GpTZL1RV5Vz5psJSY2oxH1rSr5Bk`). Hosted owner sign-in persisted;
   real draft metadata and all five gate states rendered, with Enable disabled.
   The hosted library showed only the approved test artifact and successfully
-  issued its private download link. No browser console warnings/errors observed.
+  issued its private download link.
   The external preview still redirects anonymous access to Vercel SSO (HTTP 302).
 - An additional actual-package check replaced the approved ZIP checksum in an
   ignored input copy; inspection rejected it before upload. No real package or
@@ -147,6 +148,16 @@ Browser review also prompted one narrow UI improvement: the full 44-file notice
 inventory is available in a collapsed native disclosure, keeping warnings and
 gates easy to reach. Decimal MB/KB labels now match their units. Final deployment
 and screenshots are retained under ignored `artifacts/store-002`.
+Clicking an owner navigation item while its first data request was pending
+exposed a loading race during browser QA. Explicit loading/error states now
+preserve the selected destination without rendering null data; real 403 errors
+remain visible with retry. The targeted regressions cover both outcomes.
+
+The post-migration advisor results match the prior security baseline: nine
+intentional deny-by-default RLS tables with no browser policies, and the existing
+[leaked-password protection warning](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
+This portal uses email OTP, not passwords. Performance notices only identify
+currently unused indexes in the small preview ledger; no indexes were removed.
 
 No full STORE-001 suite, plugin build, DAW manipulation, listening test or new
 outbound email was performed. Synthetic OTPs were generated through Auth's admin
