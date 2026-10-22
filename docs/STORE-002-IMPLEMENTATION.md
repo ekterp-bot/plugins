@@ -131,9 +131,22 @@ and leaves status draft. It was not run for the real release in this pass.
   permanent grant retention, three repeat test download authorizations, stored
   test bytes matching SHA-256, unauthorized/non-owner denial, private-field
   exclusion, and the real installer's enforced hold.
-- Production home/download-page responses were recorded before preview deployment
-  for byte comparison. Build produced eight routes. Browser/deployment completion
-  evidence is recorded separately after the protected preview update.
+- Production home/download-page responses remained byte-identical after preview
+  deployment; `origin/main` remains `3368296e7f7f4f99e3922e2643920cd5717dd19c`.
+  Build produced eight routes. The protected preview deployment for `9678c8a`
+  reached Ready (`GpTZL1RV5Vz5psJSY2oxH1rSr5Bk`). Hosted owner sign-in persisted;
+  real draft metadata and all five gate states rendered, with Enable disabled.
+  The hosted library showed only the approved test artifact and successfully
+  issued its private download link. No browser console warnings/errors observed.
+  The external preview still redirects anonymous access to Vercel SSO (HTTP 302).
+- An additional actual-package check replaced the approved ZIP checksum in an
+  ignored input copy; inspection rejected it before upload. No real package or
+  release metadata was changed by that negative test.
+
+Browser review also prompted one narrow UI improvement: the full 44-file notice
+inventory is available in a collapsed native disclosure, keeping warnings and
+gates easy to reach. Decimal MB/KB labels now match their units. Final deployment
+and screenshots are retained under ignored `artifacts/store-002`.
 
 No full STORE-001 suite, plugin build, DAW manipulation, listening test or new
 outbound email was performed. Synthetic OTPs were generated through Auth's admin

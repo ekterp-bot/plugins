@@ -13,7 +13,7 @@ with the current app is **one Vercel shareable link for the existing preview
 branch**. Keep project-wide Deployment Protection enabled and preserve the app's
 verified-email, live-session, owner and permanent-entitlement checks.
 
-**External access remains held.** The previously verified Vercel Hobby plan is restricted to
+**External access remains held.** The browser-confirmed Vercel Hobby plan is restricted to
 personal, non-commercial use. A company plugin storefront/beta portal appears to
 fall within Vercel's commercial-use definition even while checkout is disabled;
 this is an application of the published policy, not a provider determination.
@@ -27,7 +27,7 @@ that restriction. [Vercel fair-use guidelines](https://vercel.com/docs/limits/fa
 | Website checkout | `codex/hex-plugin-storefront` in the retained marketing worktree. Local status/worktrees inspected before this document was added. |
 | Existing Vercel target | Repository records identify team `ekterp-bots-projects`, project `hex-solutions`, production branch `main`. STORE-001 records private hosted validation at the preview branch alias below. |
 | Exact allowed hosted origin | `https://hex-solutions-git-codex-hex-plugin-fdcb17-ekterp-bots-projects.vercel.app`, from `server/store-config.mjs`. Localhost port 4176 is the only other allowed origin. Arbitrary deployment hosts are rejected; `VERCEL_ENV` must be `preview`. |
-| Vercel plan/protection live recheck | The read-only Vercel connector required reauthentication; this pass stopped that path without a login loop. Hobby was verified previously, not freshly rechecked here. Existing sharing-link inventory and capacity remain unverified. STORE-001's recorded anonymous `/account` request redirected to Vercel SSO. |
+| Vercel plan/protection live recheck | The authenticated deployment dashboard visibly confirmed Hobby during STORE-002 verification. Anonymous `/account` still redirects to Vercel SSO (HTTP 302). The connector required reauthentication, so the existing browser session was used. Sharing-link inventory and capacity remain unverified; no sharing change was made. |
 | Supabase project | Read-only connector confirmed `hex-store-001-preview`, project `pujpznngwcgutujqgmkp`, region `us-west-1`, `ACTIVE_HEALTHY`. |
 | Supabase plan | Read-only organization lookup confirmed organization `azcqawefzjsywbtadmpo` has `plan=free`, `tier=tier_free`. |
 | Existing release storage | `store-installers` remains private. After uploading the single STORE-002 ZIP as a disabled draft, it contains **4 objects totaling 9,031,152 bytes**: 349 previous test bytes plus the 9,030,803-byte ZIP. Bucket-specific `file_size_limit` was unset at inspection; the Free project upload limit still applies. This does not measure whole-organization usage or billed storage averages. |

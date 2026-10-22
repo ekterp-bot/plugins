@@ -7,7 +7,7 @@
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const state = { session:null, csrf:null, view:adminMode?'overview':'library', email:'', library:[], admin:null };
   const date = value => { if (!value) return '—'; const d = new Date(value); return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); };
-  const bytes = value => Number(value) >= 1048576 ? `${(Number(value)/1048576).toFixed(1)} MB` : Number(value) >= 1024 ? `${(Number(value)/1024).toFixed(1)} KB` : `${Math.max(0,Number(value || 0))} bytes`;
+  const bytes = value => Number(value) >= 1000000 ? `${(Number(value)/1000000).toFixed(2)} MB` : Number(value) >= 1000 ? `${(Number(value)/1000).toFixed(1)} KB` : `${Math.max(0,Number(value || 0))} bytes`;
   const label = value => String(value || '').replace(/[_-]/g,' ');
   const badge = (text,kind='') => `<span class="portal-badge ${esc(kind)}">${esc(label(text))}</span>`;
   const minorFactor = (currency='USD') => { try {return 10 ** new Intl.NumberFormat('en',{style:'currency',currency}).resolvedOptions().maximumFractionDigits;} catch {return 100;} };
@@ -33,7 +33,7 @@
   }
   function releaseNotices(release) {
     const notices = Array.isArray(release.mandatory_notices) ? release.mandatory_notices : [];
-    return notices.length ? `<div class="release-notice-files"><span class="tiny-label">REQUIRED NOTICES INCLUDED IN ZIP</span><ul>${notices.map(item=>`<li>${esc(item.path)}</li>`).join('')}</ul></div>` : '';
+    return notices.length ? `<details class="release-notice-files"><summary>Required notices and documents (${notices.length} ${notices.length===1?'file':'files'})</summary><ul>${notices.map(item=>`<li>${esc(item.path)}</li>`).join('')}</ul></details>` : '';
   }
   function notice(target,message,kind='info') { const el=$(target);el.textContent=message;el.className=`portal-message ${kind}`;el.hidden=!message; }
   async function api(op,body) {
